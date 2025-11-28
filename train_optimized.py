@@ -23,6 +23,7 @@ from utils.feature_extractor import AdvancedFeatureExtractor
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
 class OptimizedModelTrainer:
     def __init__(self):
         self.data_loader = DataLoader()
