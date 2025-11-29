@@ -8,7 +8,7 @@ from utils.feature_extractor import AdvancedFeatureExtractor
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-with open('models/lighbgmModel.pkl','rb') as f:
+with open('models/xgboostModel.pkl','rb') as f:
     model=pickle.load(f)
 
 scaler=StandardScaler()
@@ -27,7 +27,7 @@ feature_vector = feature_vector.fillna(0)
 
 # Scale features
 X_scaled = scaler.fit_transform(feature_vector)
-print(X_scaled.shape)
+
 # Get predictions from all models
 predictions = {}
 probabilities = {}
