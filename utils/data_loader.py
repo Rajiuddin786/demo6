@@ -18,14 +18,22 @@ class AdvancedFeatureExtractor:
         # Ensure required columns exist and cast to float
         dwell = df['dwell_time'].astype(float)
         flight = df['flight_time'].astype(float)
+        press_press=df['press_press'].astype(float)
+        release_release=df['release_release'].astype(float)
 
         total_time = float((dwell.sum() + flight.sum()))
         dwell_mean = float(dwell.mean())
         flight_mean = float(flight.mean())
+        press_press_mean=float(press_press.mean())
+        release_release_mean=float(release_release.mean())
         dwell_std = float(dwell.std(ddof=0)) if len(dwell) > 0 else 0.0
         flight_std = float(flight.std(ddof=0)) if len(flight) > 0 else 0.0
+        press_press_std=float(flight.std(ddof=0)) if len(press_press) > 0 else 0.0
+        release_release_std=float(flight.std(ddof=0)) if len(release_release) > 0 else 0.0
         dwell_cv = float(dwell_std / dwell_mean) if dwell_mean != 0 else 0.0
         flight_cv = float(flight_std / flight_mean) if flight_mean != 0 else 0.0
+        press_press_cv=float(press_press_std/press_press_mean) if press_press_mean !=0 else 0.0
+        release_release_cv=float(release_release_std/release_release_mean) if release_release_mean != 0 else 0.0
         dwell_flight_ratio = float(dwell_mean / flight_mean) if flight_mean != 0 else 0.0
 
         # Optional pause column if present, otherwise 0
@@ -35,13 +43,19 @@ class AdvancedFeatureExtractor:
             pause_ratio = 0.0
 
         features = {
+            'total_time': total_time,
             'dwell_mean': dwell_mean,
             'flight_mean': flight_mean,
-            'total_time': total_time,
+            'press_press_mean':press_press_mean,
+            'release_release_mean':release_release_mean,
             'dwell_std': dwell_std,
             'flight_std': flight_std,
+            'press_press_std':press_press_std,
+            'release_release_std':release_release_std,
             'dwell_cv': dwell_cv,
             'flight_cv': flight_cv,
+            'press_press_cv':press_press_cv,
+            'release_release_cv':release_release_cv,
             'dwell_flight_ratio': dwell_flight_ratio,
             'pause_ratio': pause_ratio,
         }
