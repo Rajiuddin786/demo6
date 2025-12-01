@@ -1,16 +1,9 @@
-from flask import Flask, render_template, request, jsonify
-import csv
-import time
-import os
+from fastapi import FastAPI,requests
 
-app = Flask(__name__)
+app=FastAPI()
 
-@app.route('/')
-def index():
-    return render_template('index.html')  # Serves a webpage for typing
-
-@app.route('/record', methods=['POST'])
-def record_keystrokes():
+@app.post('/get-data')
+def keystrokeData():
     data = request.json  # Keystroke data from frontend
     keystrokes = data.get("keystrokes", [])
 
@@ -25,6 +18,3 @@ def record_keystrokes():
         writer.writerows(keystrokes)
 
     return jsonify({"status": "success", "message": "Keystrokes saved."})
-
-if __name__ == "__main__":
-    app.run(debug=True)

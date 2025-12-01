@@ -1,20 +1,19 @@
-import logging
-from lightgbm import LGBMClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-import pickle
+from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 import pandas as pd
+import pickle
+import logging
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 from config import Config
 from utils.data_loader import DataLoader
 from utils.feature_extractor import AdvancedFeatureExtractor
 
-# Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class LightBGMModel:
+class RandomForest:
     def __init__(self):
         self.data_loader = DataLoader()
         self.scaler = StandardScaler()
@@ -22,13 +21,15 @@ class LightBGMModel:
     def train_model(self):
         X_train,y_train=self.prepare_data()
 
-        logger.info("Training LightGBM...")
-        model = LGBMClassifier(
-            n_estimators= 500,
-            max_depth= 12,
-            learning_rate= 0.05,
-            random_state=42,
-            eval_metric= 'logloss')
+        logger.info("Training Random Forest...")
+        model = RandomForestClassifier(
+            n_estimators= 300,
+            max_depth =20,
+            min_samples_split= 3,
+            min_samples_leaf= 2,
+            random_state= 42,
+            class_weight='balanced')
+        model.fit(X_train, y_train)
         
         model.fit(X_train, y_train)
         self.save_model(model)
@@ -61,9 +62,8 @@ class LightBGMModel:
         return X
     
     def save_model(self,model):
-        with open('models/lightbgmModel.pkl','wb') as f:
+        with open('models/randomForestModel.pkl','wb') as f:
             pickle.dump(model,f)
 
-if __name__ == '__main__':
-    lightBGM=LightBGMModel()
-    lightBGM.train_model()
+if __name__ == "__main__":
+    RandomForest().train_model()

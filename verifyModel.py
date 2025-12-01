@@ -5,14 +5,15 @@ from sklearn.preprocessing import StandardScaler
 
 from utils.feature_extractor import AdvancedFeatureExtractor
 
+models=['models/randomForestModel.pkl','models/lightbgmModel.pkl','models/xgboostModel.pkl']
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-with open('models/xgboostModel.pkl','rb') as f:
+with open(models[1],'rb') as f:
     model=pickle.load(f)
 
 scaler=StandardScaler()
-df=pd.read_csv('data/sample5109.csv')
+df=pd.read_csv('data/sample20.csv')
 features=AdvancedFeatureExtractor().extract_comprehensive_features(df)
 feature_vector=pd.DataFrame([features])
 
