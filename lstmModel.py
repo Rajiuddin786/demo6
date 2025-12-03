@@ -4,6 +4,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input,LSTM,RepeatVector
 from tensorflow.keras.optimizers import Adam
+import pickle
 import os
 
 i=1
@@ -62,10 +63,9 @@ autoencoder.save("models/LSTMmodel.h5")
 
 mse = np.mean(np.power(X - recon, 2), axis=(1,2))
 threshold = np.percentile(mse, 95)  
-
+model={'threshold':threshold,'scaler':scaler,'model':"models/LSTMmodel.h5"}
 print("Threshold:", threshold)
-import pickle
-with open("threshold.pkl", "wb") as f:
-    pickle.dump(threshold, f)
-with open("scaler.pkl", "wb") as f:
-    pickle.dump(scaler, f)
+
+with open('models/lstmModel.pkl','wb') as f:
+    pickle.dump(model,f)
+

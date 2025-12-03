@@ -5,12 +5,12 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 
-model = load_model("models/LSTMmodel.h5",compile=False)
+with open('models/lstmModel.pkl','rb') as f:
+    model_details=pickle.load(f)
 
-with open("scaler.pkl", "rb") as f:
-    scaler = pickle.load(f)
-with open("threshold.pkl", "rb") as f:
-    threshold = pickle.load(f)
+model=load_model(model_details['model'],compile=False)
+scaler=model_details['scaler']
+threshold=model_details['threshold']
 
 
 def predict_user(df, scaler, model, seq_len=8, threshold=0.01):
